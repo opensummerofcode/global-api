@@ -1,12 +1,10 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { User } from './user.type';
+import { UserService } from './user.service';
 
 @Resolver(of => User)
 export class UserResolver {
-  //   constructor(
-  //     private readonly authorsService: AuthorsService,
-  //     private readonly postsService: PostsService,
-  //   ) {}
+  constructor(private readonly userService: UserService) {}
 
   @Query(returns => User)
   async hello(): Promise<User> {
@@ -23,7 +21,7 @@ export class UserResolver {
     name: string,
     @Args('email') email: string,
   ): Promise<User> {
-    return { id: 'he,hdefsef', name, email };
+    return this.userService.create({email, name})
   }
 
   //   @ResolveProperty()
