@@ -21,7 +21,16 @@ export class UserResolver {
     name: string,
     @Args('email') email: string,
   ): Promise<User> {
-    return this.userService.create({email, name})
+    return this.userService.create({ email, name });
+  }
+
+  @Mutation(returns => User)
+  async confirmAccount(
+    @Args('token')
+    token: string,
+    @Args('password') password: string,
+  ): Promise<User> {
+    return this.userService.confirmAccount(token, password);
   }
 
   //   @ResolveProperty()

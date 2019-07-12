@@ -5,6 +5,7 @@
 
 type Mutation {
   addUser(email: String!, name: String!): User!
+  confirmAccount(password: String!, token: String!): User!
 }
 
 type Query {

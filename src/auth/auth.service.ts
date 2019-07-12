@@ -28,6 +28,10 @@ export class AuthService {
     );
   }
 
+  async verify(token: string) {
+    return this.jwtService.verify(token);
+  }
+
   async sign(user: any) {
     return {
       access_token: this.createToken(
