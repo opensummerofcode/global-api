@@ -20,9 +20,6 @@ type User {
   """User fullname (firstname & lastname)"""
   name: String!
 
-  """User password"""
-  password: String
-
   """User email"""
   email: String!
   role: String
