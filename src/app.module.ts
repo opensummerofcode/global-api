@@ -1,21 +1,28 @@
 import { Module } from '@nestjs/common';
-import { config } from 'dotenv';
 import { GraphQLModule } from '@nestjs/graphql';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
+import { ConfigService } from './config/config.service';
+import { ConfigModule } from './config/config.module';
 
-config();
+const config = new ConfigService();
 
 @Module({
   imports: [
     UserModule,
     GraphQLModule.forRoot({ autoSchemaFile: 'schema.gql' }),
-    MongooseModule.forRoot(process.env.MONGODB_URI, {
-      dbName: process.env.DB_NAME,
-      useNewUrlParser: true,
-      useFindAndModify: false,
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        uri: configService.get('MONGODB_URI'),
+        dbName: config.get('DB_NAME'),
+        useNewUrlParser: true,
+        useFindAndModify: false,
+      }),
+      inject: [ConfigService],
     }),
+    ConfigModule,
   ],
-  // providers: [UsersService, ChaptersService],
+  providers: [ConfigService],
 })
 export class AppModule {}
