@@ -5,6 +5,7 @@ import { HandlebarsAdapter, MailerModule } from '@nest-modules/mailer';
 import { UserModule } from './user/user.module';
 import { ConfigService } from './config/config.service';
 import { ConfigModule } from './config/config.module';
+import { AuthModule } from './auth/auth.module';
 
 const config = new ConfigService();
 
@@ -45,6 +46,7 @@ const config = new ConfigService();
       },
     }),
     ConfigModule,
+    AuthModule,
   ],
   providers: [ConfigService],
 })

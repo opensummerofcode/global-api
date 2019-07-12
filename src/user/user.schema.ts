@@ -5,4 +5,5 @@ export const UserSchema = new mongoose.Schema({
   email: String,
   password: String,
   role: String,
+  pending: { type: Boolean, default: true },
 });
