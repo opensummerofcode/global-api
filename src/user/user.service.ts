@@ -72,4 +72,8 @@ export class UserService {
     if (!result) throw new UserInputError('Email or password incorrect!');
     return user;
   }
+
+  async users(): Promise<IUser[]> {
+    return this.userModel.find();
+  }
 }

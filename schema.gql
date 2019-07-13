@@ -12,6 +12,7 @@ type Mutation {
 
 type Query {
   me: User!
+  users: [User!]
 }
 
 """User model"""

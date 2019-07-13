@@ -57,6 +57,12 @@ export class UserResolver {
     return this.authService.logout(res);
   }
 
+  @UseGuards(Auth)
+  @Query(returns => [User], { nullable: true })
+  async users(): Promise<User[]> {
+    return this.userService.users();
+  }
+
   //   @ResolveProperty()
   //   async posts(@Parent() author) {
   //     const { id } = author;
