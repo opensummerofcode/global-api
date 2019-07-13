@@ -1,18 +1,18 @@
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Context } from '@nestjs/graphql';
 import { User } from './user.type';
 import { UserService } from './user.service';
+import { AuthService } from '../auth/auth.service';
 
 @Resolver(of => User)
 export class UserResolver {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly authService: AuthService,
+  ) {}
 
   @Query(returns => User)
-  async hello(): Promise<User> {
-    return {
-      name: 'Ismaila',
-      id: 'HJKLLLL3L22L3L',
-      email: 'isma@isma.be',
-    };
+  async me(@Context() ctx: any): Promise<User> {
+    return ctx.user;
   }
 
   @Mutation(returns => User)
@@ -31,6 +31,16 @@ export class UserResolver {
     @Args('password') password: string,
   ): Promise<User> {
     return this.userService.confirmAccount(token, password);
+  }
+
+  @Mutation(returns => User)
+  async login(
+    @Args('email')
+    email: string,
+    @Args('password') password: string,
+    @Context() ctx: any,
+  ): Promise<User> {
+    return this.authService.login(email, password, ctx);
   }
 
   //   @ResolveProperty()

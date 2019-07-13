@@ -12,10 +12,6 @@ export class AuthService {
     private readonly configService: ConfigService,
   ) {}
 
-  async validateUser(email: string, password: string): Promise<any> {
-    return this.userService.checkCredentials(email, password);
-  }
-
   async createToken(user: any, expiresIn?: any) {
     const payload = { sub: user.id };
     return this.jwtService.sign(payload, { expiresIn });
@@ -32,12 +28,30 @@ export class AuthService {
     return this.jwtService.verify(token);
   }
 
-  async sign(user: any) {
-    return {
-      access_token: this.createToken(
-        user,
-        this.configService.get('EXPIRES_IN'),
-      ),
-    };
+  async login(email: string, password: string, { res }) {
+    const user = await this.userService.checkCredentials(email, password);
+    const token = await this.createToken(
+      user,
+      this.configService.get('EXPIRES_IN'),
+    );
+    res.cookie('token', token, {
+      httpOnly: true,
+      maxAge: 60 * 60 * 24 * 1000, // 1d TODO to put inside .env or config
+    });
+    return user;
+  }
+
+  async loggedUser({ token }) {
+    if (token) {
+      // Verify the token
+      try {
+        const { sub: userId } = await this.verify(token);
+        // Get the user
+        return userId && await this.userService.findById(userId);
+      } catch (e) {
+        return null;
+      }
+    }
+    return null;
   }
 }

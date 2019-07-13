@@ -1,4 +1,5 @@
 import { Injectable, Inject, forwardRef } from '@nestjs/common';
+import { UserInputError } from 'apollo-server-express';
 import * as bcrypt from 'bcrypt';
 import { MailerService } from '@nest-modules/mailer';
 import { IUser } from './interfaces/user.interface';
@@ -61,7 +62,14 @@ export class UserService {
     return this.userModel.findOne({ email });
   }
 
-  checkCredentials(email: string, password: string): any {
-    throw new Error('Method not implemented.');
+  async findById(id: string): Promise<IUser> {
+    return this.userModel.findById(id);
+  }
+
+  async checkCredentials(email: string, password: string): Promise<IUser> {
+    const user = await this.findByEmail(email);
+    const result = user && (await bcrypt.compare(password, user.password));
+    if (!result) throw new UserInputError('Email or password incorrect!');
+    return user;
   }
 }

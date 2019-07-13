@@ -6,10 +6,11 @@
 type Mutation {
   addUser(email: String!, name: String!): User!
   confirmAccount(password: String!, token: String!): User!
+  login(password: String!, email: String!): User!
 }
 
 type Query {
-  hello: User!
+  me: User!
 }
 
 """User model"""

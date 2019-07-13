@@ -6,17 +6,26 @@ import { UserModule } from './user/user.module';
 import { ConfigService } from './config/config.service';
 import { ConfigModule } from './config/config.module';
 import { AuthModule } from './auth/auth.module';
-
-const config = new ConfigService();
+import { AuthService } from './auth/auth.service';
 
 @Module({
   imports: [
     UserModule,
-    GraphQLModule.forRoot({ autoSchemaFile: 'schema.gql' }),
+    GraphQLModule.forRootAsync({
+      imports: [AuthModule],
+      useFactory: async (authService: AuthService) => ({
+        autoSchemaFile: 'schema.gql',
+        context: async ({ req, res }) => {
+          const user = await authService.loggedUser(req.cookies);
+          return { req, res, user };
+        },
+      }),
+      inject: [AuthService],
+    }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        uri: configService.get('MONGODB_URI'),
+      useFactory: async (config: ConfigService) => ({
+        uri: config.get('MONGODB_URI'),
         dbName: config.get('DB_NAME'),
         useNewUrlParser: true,
         useFindAndModify: false,
