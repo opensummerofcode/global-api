@@ -5,6 +5,7 @@ import { AuthService } from '../auth/auth.service';
 import { CurrentUser } from './decorators/current-user-decorator';
 import { UseGuards } from '@nestjs/common';
 import { Guest } from '../auth/guards/guest.guard';
+import { Auth } from '../auth/guards/auth.guard';
 
 @Resolver(of => User)
 export class UserResolver {
@@ -13,11 +14,13 @@ export class UserResolver {
     private readonly authService: AuthService,
   ) {}
 
+  @UseGuards(Auth)
   @Query(returns => User)
   async me(@CurrentUser() user: any): Promise<User> {
     return user;
   }
 
+  @UseGuards(Auth)
   @Mutation(returns => User)
   async addUser(
     @Args('name')
