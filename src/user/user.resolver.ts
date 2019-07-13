@@ -2,6 +2,7 @@ import { Resolver, Query, Mutation, Args, Context } from '@nestjs/graphql';
 import { User } from './user.type';
 import { UserService } from './user.service';
 import { AuthService } from '../auth/auth.service';
+import { CurrentUser } from './decorators/current-user-decorator';
 
 @Resolver(of => User)
 export class UserResolver {
@@ -11,8 +12,8 @@ export class UserResolver {
   ) {}
 
   @Query(returns => User)
-  async me(@Context() ctx: any): Promise<User> {
-    return ctx.user;
+  async me(@CurrentUser() user: any): Promise<User> {
+    return user;
   }
 
   @Mutation(returns => User)
