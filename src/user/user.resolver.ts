@@ -51,6 +51,12 @@ export class UserResolver {
     return this.authService.login(email, password, ctx);
   }
 
+  @UseGuards(Auth)
+  @Mutation(returns => Boolean)
+  logout(@Context('res') res: any): boolean {
+    return this.authService.logout(res);
+  }
+
   //   @ResolveProperty()
   //   async posts(@Parent() author) {
   //     const { id } = author;

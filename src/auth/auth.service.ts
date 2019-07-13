@@ -41,13 +41,18 @@ export class AuthService {
     return user;
   }
 
+  logout(res: any) {
+    res.clearCookie('token');
+    return true;
+  }
+
   async loggedUser({ token }) {
     if (token) {
       // Verify the token
       try {
         const { sub: userId } = await this.verify(token);
         // Get the user
-        return userId && await this.userService.findById(userId);
+        return userId && (await this.userService.findById(userId));
       } catch (e) {
         return null;
       }
