@@ -3,6 +3,15 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+"""Chapter model"""
+type GqlChapter {
+  """Chapter ID"""
+  id: ID!
+
+  """Chapter name"""
+  name: String!
+}
+
 type Mutation {
   addUser(email: String!, name: String!): User!
   confirmAccount(password: String!, token: String!): User!
@@ -12,6 +21,7 @@ type Mutation {
   updateUserRole(userId: String!, role: String!): User!
   deleteMe(userId: String!): User!
   deleteUser(userId: String!): User!
+  createChapter(name: String!): GqlChapter!
 }
 
 type Query {
