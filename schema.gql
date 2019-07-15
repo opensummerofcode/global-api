@@ -22,11 +22,13 @@ type Mutation {
   deleteMe(userId: String!): User!
   deleteUser(userId: String!): User!
   createChapter(name: String!): GqlChapter!
+  deleteChapter(id: String!): GqlChapter!
 }
 
 type Query {
   me: User!
   users: [User!]
+  chapters: [GqlChapter!]
 }
 
 input UpdateProfileInput {

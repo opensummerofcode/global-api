@@ -12,4 +12,12 @@ export class ChapterService {
   async createChapter(name: string) {
     return new this.chapterModel({ name }).save();
   }
+
+  async delete(id: string): Promise<Chapter> {
+    return this.chapterModel.findByIdAndDelete(id);
+  }
+
+  async chapters(): Promise<Chapter[]> {
+    return this.chapterModel.find();
+  }
 }
