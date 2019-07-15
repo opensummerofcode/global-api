@@ -84,11 +84,7 @@ export class UserResolver {
 
   @UseGuards(Auth)
   @Mutation(returns => User)
-  async deleteMe(
-    @Args('userId') userId: string,
-    @CurrentUser() user,
-    @Context() ctx,
-  ): Promise<User> {
+  async deleteMe(@CurrentUser() user, @Context() ctx): Promise<User> {
     const deletedUser = await this.userService.delete(user);
     this.authService.logout(ctx.res);
     return deletedUser;
