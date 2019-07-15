@@ -6,6 +6,7 @@ import { CurrentUser } from './decorators/current-user-decorator';
 import { UseGuards } from '@nestjs/common';
 import { Guest } from '../auth/guards/guest.guard';
 import { Auth } from '../auth/guards/auth.guard';
+import { UpdateProfileInput } from './inputs/update.input';
 
 @Resolver(of => User)
 export class UserResolver {
@@ -18,6 +19,12 @@ export class UserResolver {
   @Query(returns => User)
   async me(@CurrentUser() user: any): Promise<User> {
     return user;
+  }
+
+  @UseGuards(Auth)
+  @Query(returns => [User], { nullable: true })
+  async users(): Promise<User[]> {
+    return this.userService.users();
   }
 
   @UseGuards(Auth)
@@ -58,9 +65,39 @@ export class UserResolver {
   }
 
   @UseGuards(Auth)
-  @Query(returns => [User], { nullable: true })
-  async users(): Promise<User[]> {
-    return this.userService.users();
+  @Mutation(returns => User)
+  async updateProfile(
+    @CurrentUser() user: any,
+    @Args('input') input: UpdateProfileInput,
+  ): Promise<User> {
+    return this.userService.update(input, user);
+  }
+
+  @UseGuards(Auth)
+  @Mutation(returns => User)
+  async updateUserRole(
+    @Args('role') role: string,
+    @Args('userId') userId: string,
+  ): Promise<User> {
+    return this.userService.update({ role }, { id: userId });
+  }
+
+  @UseGuards(Auth)
+  @Mutation(returns => User)
+  async deleteMe(
+    @Args('userId') userId: string,
+    @CurrentUser() user,
+    @Context() ctx,
+  ): Promise<User> {
+    const deletedUser = await this.userService.delete(user);
+    this.authService.logout(ctx.res);
+    return deletedUser;
+  }
+
+  @UseGuards(Auth)
+  @Mutation(returns => User)
+  async deleteUser(@Args('userId') userId: string): Promise<User> {
+    return this.userService.delete({ id: userId });
   }
 
   //   @ResolveProperty()

@@ -41,7 +41,7 @@ export class UserService {
     return this.update({ password, pending: false }, user);
   }
 
-  async update(input: any, user: IUser): Promise<IUser> {
+  async update(input: any, user: any): Promise<IUser> {
     const fieldsToUp = { ...input };
     const { email, password } = input;
     if (email) {
@@ -75,5 +75,9 @@ export class UserService {
 
   async users(): Promise<IUser[]> {
     return this.userModel.find();
+  }
+
+  async delete(user: any) {
+    return this.userModel.findByIdAndDelete(user.id);
   }
 }

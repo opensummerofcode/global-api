@@ -7,6 +7,7 @@ import { ConfigService } from './config/config.service';
 import { ConfigModule } from './config/config.module';
 import { AuthModule } from './auth/auth.module';
 import { AuthService } from './auth/auth.service';
+import { ChapterModule } from './chapter/chapter.module';
 
 @Module({
   imports: [
@@ -56,6 +57,7 @@ import { AuthService } from './auth/auth.service';
     }),
     ConfigModule,
     AuthModule,
+    ChapterModule,
   ],
   providers: [ConfigService],
 })

@@ -8,11 +8,26 @@ type Mutation {
   confirmAccount(password: String!, token: String!): User!
   login(password: String!, email: String!): User!
   logout: Boolean!
+  updateProfile(input: UpdateProfileInput!): User!
+  updateUserRole(userId: String!, role: String!): User!
+  deleteMe(userId: String!): User!
+  deleteUser(userId: String!): User!
 }
 
 type Query {
   me: User!
   users: [User!]
+}
+
+input UpdateProfileInput {
+  """User fullname (firstname & lastname)"""
+  name: String
+
+  """User email"""
+  email: String
+
+  """User password"""
+  password: String
 }
 
 """User model"""
