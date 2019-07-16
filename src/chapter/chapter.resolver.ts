@@ -10,23 +10,27 @@ import { Chapter } from './types/chapter.type';
 import { ChapterService } from './chapter.service';
 import { UseGuards } from '@nestjs/common';
 import { Auth } from '../auth/guards/auth.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
 
 @Resolver(of => Chapter)
 export class ChapterResolver {
   constructor(private readonly chapterService: ChapterService) {}
 
+  @Roles('ADMIN')
   @UseGuards(Auth)
   @Query(returns => [Chapter], { nullable: true })
   async chapters(): Promise<Chapter[]> {
     return this.chapterService.chapters();
   }
 
+  @Roles('ADMIN')
   @UseGuards(Auth)
   @Mutation(returns => Chapter)
   async createChapter(@Args('name') name: string): Promise<Chapter> {
     return this.chapterService.createChapter(name);
   }
 
+  @Roles('ADMIN')
   @UseGuards(Auth)
   @Mutation(returns => Chapter)
   async deleteChapter(@Args('id') id: string): Promise<Chapter> {

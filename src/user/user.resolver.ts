@@ -15,6 +15,7 @@ import { UseGuards } from '@nestjs/common';
 import { Guest } from '../auth/guards/guest.guard';
 import { Auth } from '../auth/guards/auth.guard';
 import { UpdateProfileInput } from './inputs/update.input';
+import { Roles } from '../auth/decorators/roles.decorator';
 
 @Resolver(of => User)
 export class UserResolver {
@@ -81,6 +82,7 @@ export class UserResolver {
     return this.userService.update(input, user);
   }
 
+  @Roles('ADMIN')
   @UseGuards(Auth)
   @Mutation(returns => User)
   async updateUserRole(
@@ -98,6 +100,7 @@ export class UserResolver {
     return deletedUser;
   }
 
+  @Roles('ADMIN')
   @UseGuards(Auth)
   @Mutation(returns => User)
   async deleteUser(@Args('userId') userId: string): Promise<User> {
