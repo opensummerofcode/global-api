@@ -5,4 +5,5 @@ export interface IChapter extends Document {
   readonly id: string;
   readonly name: string;
   readonly managers?: IUser[];
+  readonly editions?: any;
 }

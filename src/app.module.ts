@@ -30,6 +30,7 @@ import { ChapterModule } from './chapter/chapter.module';
         dbName: config.get('DB_NAME'),
         useNewUrlParser: true,
         useFindAndModify: false,
+        useCreateIndex: true,
       }),
       inject: [ConfigService],
     }),

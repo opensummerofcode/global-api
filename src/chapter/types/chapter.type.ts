@@ -1,5 +1,6 @@
 import { Field, ObjectType, ID } from 'type-graphql';
 import { User } from '../../user/user.type';
+import { Edition } from './edition.type';
 
 @ObjectType({ description: 'Chapter model' })
 export class Chapter {
@@ -14,4 +15,10 @@ export class Chapter {
     nullable: 'itemsAndList',
   })
   managers?: User[];
+
+  @Field(type => [Edition], {
+    description: 'Editions of a chapter',
+    nullable: true,
+  })
+  editions?: Edition[];
 }

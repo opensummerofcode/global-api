@@ -69,4 +69,16 @@ export class ChapterService {
     const populatedChapter = await chapter.populate('managers').execPopulate();
     return populatedChapter.managers;
   }
+
+  async addEdition(
+    chapterId: string,
+    year: number,
+    uri: string,
+  ): Promise<IChapter> {
+    // TODO fix subdoc uri field uniqueness
+    return this.update({
+      chapterId,
+      update: { $push: { editions: { year, uri } } },
+    });
+  }
 }

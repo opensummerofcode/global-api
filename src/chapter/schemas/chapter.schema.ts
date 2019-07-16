@@ -1,4 +1,5 @@
 import * as mongoose from 'mongoose';
+import { EditionSchema } from './edition.schema';
 
 export const ChapterSchema = new mongoose.Schema({
   name: {
@@ -11,4 +12,5 @@ export const ChapterSchema = new mongoose.Schema({
       ref: 'User',
     },
   ],
+  editions: [EditionSchema],
 });

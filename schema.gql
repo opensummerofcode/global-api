@@ -13,6 +13,15 @@ type Chapter {
 
   """Managers of a chapter"""
   managers: [User]
+
+  """Editions of a chapter"""
+  editions: [Edition!]
+}
+
+"""Chapter model"""
+type Edition {
+  year: Int!
+  uri: String!
 }
 
 type Mutation {
@@ -28,6 +37,7 @@ type Mutation {
   deleteChapter(id: String!): Chapter!
   addManager(chapterId: String!, userId: String!): Chapter!
   removeManager(chapterId: String!, userId: String!): Chapter!
+  newEdition(uri: String!, year: Float!, chapterId: String!): Chapter!
 }
 
 type Query {
