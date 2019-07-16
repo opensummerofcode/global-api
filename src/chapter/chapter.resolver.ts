@@ -11,6 +11,7 @@ import { ChapterService } from './chapter.service';
 import { UseGuards } from '@nestjs/common';
 import { Auth } from '../auth/guards/auth.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
+import { Int } from 'type-graphql';
 
 @Resolver(of => Chapter)
 export class ChapterResolver {
@@ -59,7 +60,7 @@ export class ChapterResolver {
   @Mutation(returns => Chapter)
   async newEdition(
     @Args('chapterId') chapterId: string,
-    @Args('year') year: number,
+    @Args({ name: 'year', type: () => Int }) year: number,
     @Args('uri') uri: string,
   ): Promise<Chapter> {
     return this.chapterService.addEdition(chapterId, year, uri);
