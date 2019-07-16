@@ -1,5 +1,5 @@
 import { Document } from 'mongoose';
-import { IUser } from 'dist/user/interfaces/user.interface';
+import { IUser } from '../../user/interfaces/user.interface';
 
 export interface IChapter extends Document {
   readonly id: string;

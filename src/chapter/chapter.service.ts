@@ -33,9 +33,26 @@ export class ChapterService {
     return updatedChapter;
   }
 
+  async remove(userId: string, chapterId: string): Promise<IChapter> {
+    const session = await this.chapterModel.db.startSession();
+    let updatedChapter = null;
+    try {
+      session.startTransaction();
+      await this.userService.unlinkFromChapter(userId, chapterId, session);
+      updatedChapter = await this.update(
+        { chapterId, update: { $pull: { managers: userId } } },
+        session,
+      );
+      await session.commitTransaction();
+    } catch (err) {
+      await session.abortTransaction();
+    }
+    return updatedChapter;
+  }
+
   async update(elements: any, session?: any): Promise<IChapter> {
     return this.chapterModel
-      .findByIdAndUpdate(elements.chapterId, elements.update)
+      .findByIdAndUpdate(elements.chapterId, elements.update, { new: true })
       .session(session);
   }
 

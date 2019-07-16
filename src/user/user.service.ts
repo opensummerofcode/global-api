@@ -6,7 +6,7 @@ import { IUser } from './interfaces/user.interface';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { AuthService } from '../auth/auth.service';
-import { IChapter } from 'src/chapter/interfaces/chapter.interface';
+import { IChapter } from '../chapter/interfaces/chapter.interface';
 
 @Injectable()
 export class UserService {
@@ -88,6 +88,16 @@ export class UserService {
   ): Promise<void> {
     return this.userModel
       .updateOne({ _id: userId }, { $push: { chapters: chapterId } })
+      .session(session);
+  }
+
+  async unlinkFromChapter(
+    userId: string,
+    chapterId: string,
+    session: any,
+  ): Promise<void> {
+    return this.userModel
+      .updateOne({ _id: userId }, { $pull: { chapters: chapterId } })
       .session(session);
   }
 

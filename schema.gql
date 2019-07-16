@@ -27,6 +27,7 @@ type Mutation {
   createChapter(name: String!): Chapter!
   deleteChapter(id: String!): Chapter!
   addManager(chapterId: String!, userId: String!): Chapter!
+  removeManager(chapterId: String!, userId: String!): Chapter!
 }
 
 type Query {

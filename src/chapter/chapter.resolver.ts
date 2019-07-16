@@ -42,6 +42,15 @@ export class ChapterResolver {
     return this.chapterService.addManager(userId, chapterId);
   }
 
+  @UseGuards(Auth)
+  @Mutation(returns => Chapter)
+  async removeManager(
+    @Args('userId') userId: string,
+    @Args('chapterId') chapterId: string,
+  ): Promise<Chapter> {
+    return this.chapterService.remove(userId, chapterId);
+  }
+
   @ResolveProperty()
   async managers(@Parent() chapter) {
     return this.chapterService.managers(chapter);
