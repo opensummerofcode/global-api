@@ -4,12 +4,15 @@
 # -----------------------------------------------
 
 """Chapter model"""
-type GqlChapter {
+type Chapter {
   """Chapter ID"""
   id: ID!
 
   """Chapter name"""
   name: String!
+
+  """Managers of a chapter"""
+  managers: [User]
 }
 
 type Mutation {
@@ -19,16 +22,17 @@ type Mutation {
   logout: Boolean!
   updateProfile(input: UpdateProfileInput!): User!
   updateUserRole(userId: String!, role: String!): User!
-  deleteMe(userId: String!): User!
+  deleteMe: User!
   deleteUser(userId: String!): User!
-  createChapter(name: String!): GqlChapter!
-  deleteChapter(id: String!): GqlChapter!
+  createChapter(name: String!): Chapter!
+  deleteChapter(id: String!): Chapter!
+  addManager(chapterId: String!, userId: String!): Chapter!
 }
 
 type Query {
   me: User!
   users: [User!]
-  chapters: [GqlChapter!]
+  chapters: [Chapter!]
 }
 
 input UpdateProfileInput {
@@ -53,4 +57,7 @@ type User {
   """User email"""
   email: String!
   role: String
+
+  """Chapters of the user"""
+  chapters: [Chapter!]
 }

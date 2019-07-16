@@ -6,4 +6,10 @@ export const UserSchema = new mongoose.Schema({
   password: String,
   role: String,
   pending: { type: Boolean, default: true },
+  chapters: [
+    {
+      type: 'ObjectId',
+      ref: 'Chapter',
+    },
+  ],
 });

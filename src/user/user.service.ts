@@ -5,8 +5,8 @@ import { MailerService } from '@nest-modules/mailer';
 import { IUser } from './interfaces/user.interface';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { User } from './user.type';
 import { AuthService } from '../auth/auth.service';
+import { IChapter } from 'src/chapter/interfaces/chapter.interface';
 
 @Injectable()
 export class UserService {
@@ -17,7 +17,7 @@ export class UserService {
     private readonly authService: AuthService,
   ) {}
 
-  async create(user: User): Promise<IUser> {
+  async create(user: any): Promise<IUser> {
     const savedUser = await new this.userModel(user).save();
     const accountConfirmationToken = await this.authService.accountConfirmationToken(
       savedUser,
@@ -79,5 +79,20 @@ export class UserService {
 
   async delete(user: any) {
     return this.userModel.findByIdAndDelete(user.id);
+  }
+
+  async linkToChapter(
+    userId: string,
+    chapterId: string,
+    session: any,
+  ): Promise<void> {
+    return this.userModel
+      .updateOne({ _id: userId }, { $push: { chapters: chapterId } })
+      .session(session);
+  }
+
+  async chapters(user: IUser): Promise<IChapter[]> {
+    const populatedUser = await user.populate('chapters').execPopulate();
+    return populatedUser.chapters;
   }
 }

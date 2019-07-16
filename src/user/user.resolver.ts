@@ -1,4 +1,12 @@
-import { Resolver, Query, Mutation, Args, Context } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  Context,
+  Parent,
+  ResolveProperty,
+} from '@nestjs/graphql';
 import { User } from './user.type';
 import { UserService } from './user.service';
 import { AuthService } from '../auth/auth.service';
@@ -96,9 +104,8 @@ export class UserResolver {
     return this.userService.delete({ id: userId });
   }
 
-  //   @ResolveProperty()
-  //   async posts(@Parent() author) {
-  //     const { id } = author;
-  //     return await this.postsService.findAll({ authorId: id });
-  //   }
+  @ResolveProperty()
+  async chapters(@Parent() user) {
+    return this.userService.chapters(user);
+  }
 }

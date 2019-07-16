@@ -1,4 +1,5 @@
 import { Document } from 'mongoose';
+import { IChapter } from 'src/chapter/interfaces/chapter.interface';
 
 export interface IUser extends Document {
   readonly id: string;
@@ -7,4 +8,5 @@ export interface IUser extends Document {
   readonly password: string;
   readonly role: string;
   readonly pending: boolean;
+  readonly chapters?: IChapter[];
 }

@@ -5,4 +5,10 @@ export const ChapterSchema = new mongoose.Schema({
     unique: true,
     type: String,
   },
+  managers: [
+    {
+      type: 'ObjectId',
+      ref: 'User',
+    },
+  ],
 });
